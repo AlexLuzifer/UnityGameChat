@@ -91,14 +91,14 @@ OnSubmit - InputMessenger.SendMessage(string message);
 ## Scripts
 
 **Messenger.cs**
-```Messenger
+```
 # Объявляем переменные двух классов для чат-листа и Менеджера поля ввода
 
 private MessageListManager messageList;
 private InputMessageManager inputMessage;
 
 
-#При загрузке сцены сразу же определим эти объекты
+# При загрузке сцены сразу же определим эти объекты
 
 private void Awake()
 {
@@ -108,18 +108,18 @@ private void Awake()
 
 private void Update()
 {
-    #Отлов нажатий нужных клавиш
+    # Отлов нажатий нужных клавиш
 
     if (Input.GetKeyDown(KeyCode.Y) && Input.GetKey(KeyCode.LeftControl)) CloseMessenger();
     else if (Input.GetKeyDown(KeyCode.Y)) OpenMessenger();
 }
 
-#Публичный метод для добавления сообщения в чат-лист. Вызываем его когда срабатывает OnSubmit в поле ввода. Его же вызываем когда получили сообщение с сервера.
+# Публичный метод для добавления сообщения в чат-лист. Вызываем его когда срабатывает OnSubmit в поле ввода. Его же вызываем когда получили сообщение с сервера.
 
 public void AddMessage(string message, Color color = new Color()) => messageList.AddMessage(message, color);
 
 
-#Открыть мессенджер - открыть чат-лист и поле ввода вместе
+# Открыть мессенджер - открыть чат-лист и поле ввода вместе
 
 private void OpenMessenger()
 {
@@ -127,7 +127,7 @@ private void OpenMessenger()
     inputMessage.OpenInputMessage();
 }
 
-#Закрыть мессенджер - закрыть чат-лист и поле ввода вместе
+# Закрыть мессенджер - закрыть чат-лист и поле ввода вместе
 
 private void CloseMessenger()
 {
@@ -136,7 +136,7 @@ private void CloseMessenger()
 }
 
 
-#Два метода для получения компонентов у дочерних объектов
+# Два метода для получения компонентов у дочерних объектов
 
 private void GetMessageListManager() => messageList = transform.GetChild(0).GetComponent<MessageListManager>();
 private void GetInputMessage() => inputMessage = transform.GetChild(1).GetComponent<InputMessageManager>();
@@ -145,57 +145,57 @@ private void GetInputMessage() => inputMessage = transform.GetChild(1).GetCompon
 **InputMessageManager.cs**
 
 ```
-#Наследуем от MessengerPart для анимации открывания/закрывания поля ввода
+# Наследуем от MessengerPart для анимации открывания/закрывания поля ввода
 public class InputMessageManager : MessengerPart
 {
 
-#Имя игрока если ответ с сервера по типу (string namePlayer, string message)
+# Имя игрока если ответ с сервера по типу (string namePlayer, string message)
 [SerializeField]
 private string namePlayer = "AlexLuzifer";
 
-#Наш главный мессенджер для добавления нового сообщения и поле ввода для обнуления записи после отправки и активации фокуса.
+# Наш главный мессенджер для добавления нового сообщения и поле ввода для обнуления записи после отправки и активации фокуса.
 private Messenger messenger;
 private InputField inputField;
 
-#При старте получаем компоненты чата и поля ввода в переменные
+# При старте получаем компоненты чата и поля ввода в переменные
 private void Start() => GetComponents();
 
 
-#Публичный метод отправки сообщения. Срабатывает по событию OnSubmit у поля ввода
+# Публичный метод отправки сообщения. Срабатывает по событию OnSubmit у поля ввода
 public new void SendMessage(string message)
 {
 
-#Если сообщение пустое, то закрываем поле ввода и возвращаем метод.
+# Если сообщение пустое, то закрываем поле ввода и возвращаем метод.
     if (message == "" || message == null)
     {
         CloseInputMessage();
         return;
     }
 
-#Если мессенджер не получен по каким-либо причинам, то получаем и запускаем метод AddMessage с параметрами: ИмяИгрока + разделитель + сообщение
+# Если мессенджер не получен по каким-либо причинам, то получаем и запускаем метод AddMessage с параметрами: ИмяИгрока + разделитель + сообщение
     if (messenger == null) GetMessenger();
     messenger.AddMessage(namePlayer + ": " + message);
 
-#Стираем старый текст и закрываем поле ввода
+# Стираем старый текст и закрываем поле ввода
     inputField.text = "";
     CloseInputMessage();
 }
 
 
-#Два публичных метода для закрытия/открытия поля ввода
+# Два публичных метода для закрытия/открытия поля ввода
 public void OpenInputMessage() => VisibleInsputMessage(true);
 public void CloseInputMessage() => VisibleInsputMessage(false);
 
 
-#Приватный метод изменения видимости поля ввода
+# Приватный метод изменения видимости поля ввода
 private void VisibleInsputMessage(bool set)
 {
 
-#Проверка на существование поля ввода, задаем значение для Interactable равное переданому значению set
+# Проверка на существование поля ввода, задаем значение для Interactable равное переданому значению set
     if (inputField == null) GetInputField();
     inputField.interactable = set;
 
-#Так как мы наследовали класс MessengerPart, то вызываем метод открытия поля ввода и активируем фокус на нем. Иначе - закрываем.
+# Так как мы наследовали класс MessengerPart, то вызываем метод открытия поля ввода и активируем фокус на нем. Иначе - закрываем.
     if (set)
     {
         OpenMessengerPart();
@@ -204,7 +204,7 @@ private void VisibleInsputMessage(bool set)
     else CloseMessengerPart();
 }
 
-#Получение всех компонентов с которыми будем работать
+# Получение всех компонентов с которыми будем работать
 private void GetComponents()
 {
     GetInputField();
@@ -219,57 +219,57 @@ private void GetMessenger() => messenger = transform.parent.GetComponent<Messeng
 **MessageListManager.cs**
 
 ```
-#Чат-лист тоже наследуем от MessengerPart.
+# Чат-лист тоже наследуем от MessengerPart.
 public class MessageListManager : MessengerPart
 {
 
-#Время показа чат-листа
+# Время показа чат-листа
 [Range(3f, 120f)]
 [SerializeField]
 private float lifeTimerMax = 5f;
 
 
-#Лимит количества сообщений. Будет больше - все новые будут внизу за пределами экрана и перекроют поле ввода.
+# Лимит количества сообщений. Будет больше - все новые будут внизу за пределами экрана и перекроют поле ввода.
 [SerializeField]
 private int limitMessages = 16;
 
-#Префаб сообщения для спавна новых сообщений
+# Префаб сообщения для спавна новых сообщений
 [SerializeField]
 private GameObject messagePrefab;
 
-#Таймер для отчета показа
+# Таймер для отчета показа
 private float lifeTimer = 5f;
 
-#Блокер запуска таймера. | Unity ругается на нэйминг isShow из-за наследования
+# Блокер запуска таймера. | Unity ругается на нэйминг isShow из-за наследования
 private bool isShowMessageList = false;
 
-#Update используется в MessengerPart, поэтому базируемся на уже существующем.
+# Update используется в MessengerPart, поэтому базируемся на уже существующем.
 protected override void Update()
 {
     base.Update();
 
-#Запускаем таймер если чат-лист показывается
+# Запускаем таймер если чат-лист показывается
     if (isShowMessageList) TimerShow();
 }
 
 
-#Публичный метод для добавления сообщения в чат-лист. Второй параметр необязательный, но можно использовать для изменения цвета сообщения.
+# Публичный метод для добавления сообщения в чат-лист. Второй параметр необязательный, но можно использовать для изменения цвета сообщения.
 public void AddMessage(string message, Color color = new Color())
 {
 
-#Проверка на пустое сообщение
+# Проверка на пустое сообщение
     if (message == "" || message == null) return;
 
-#Проверка на видимость чат-листа. Если закрыт, то открываем. 
+# Проверка на видимость чат-листа. Если закрыт, то открываем. 
     if (!isShowMessageList) OpenMessageList();
 
-#Сбрасываем таймер для прочтения нового сообщения
+# Сбрасываем таймер для прочтения нового сообщения
     lifeTimer = lifeTimerMax;
 
-#Проверяем количество сообщений. Если достигает лимита - удаляем старое сообщение, то есть самое первое дочернее.
+# Проверяем количество сообщений. Если достигает лимита - удаляем старое сообщение, то есть самое первое дочернее.
     if (transform.childCount >= limitMessages) Destroy(transform.GetChild(0).gameObject);
 
-#Создаем новый экземпляр сообщения, задаем ему родителя - Чат-лист и задаем ему сообщение с цветом.
+# Создаем новый экземпляр сообщения, задаем ему родителя - Чат-лист и задаем ему сообщение с цветом.
     GameObject newMessage = Instantiate(messagePrefab);
     newMessage.transform.SetParent(transform, false);
 
@@ -277,11 +277,11 @@ public void AddMessage(string message, Color color = new Color())
 }
 
 
-#Публичные методы - Открыть/Закрыть чат-лист
+# Публичные методы - Открыть/Закрыть чат-лист
 public void OpenMessageList() => VisibleMessageList(true);
 public void CloseMessageList() => VisibleMessageList(false);
 
-#Задает видимость чата
+# Задает видимость чата
 private void VisibleMessageList(bool set)
 {
     isShowMessageList = set;
@@ -291,7 +291,7 @@ private void VisibleMessageList(bool set)
     else CloseMessengerPart();
 }
 
-#Таймер для закрытия чат-листа
+# Таймер для закрытия чат-листа
 private void TimerShow()
 {
     if (lifeTimer > 0f) lifeTimer -= Time.deltaTime;
@@ -302,36 +302,37 @@ private void TimerShow()
 
 
 **MessengerPart.cs**
+
 Так как чат-лист и поле ввода являются разными частями мессенджера, но при этом выполняют одинаковую логику анимации, то был создан этот класс.
 
 ```
-#Интерполятор для Lerp
+# Интерполятор для Lerp
 private float interpolator = 0f;
 
-#Насколько сдвигать часть мессенджера влево когда выключен
+# Насколько сдвигать часть мессенджера влево когда выключен
 [SerializeField]
 private float endPositionX = -650f;
 
-#Определитель показывается ли часть или нет
+# Определитель показывается ли часть или нет
 private bool isShow = false; 
 
-#Определяет проигрывается ли анимация
+# Определяет проигрывается ли анимация
 private bool isPlayed = false;
 
-#Для сдвига берем RectTransform
+# Для сдвига берем RectTransform
 private RectTransform rectTransform;
 
-#Во время запуска получаем RectTransform и сдвигает влево, так как по умолчанию чат выключен. 
+# Во время запуска получаем RectTransform и сдвигает влево, так как по умолчанию чат выключен. 
 private void Awake()
 {
     GetRectTransform();
     rectTransform.anchoredPosition = new Vector2(endPositionX, 0f);
 }
 
-#Запускаем метод проигрывания анимации
+# Запускаем метод проигрывания анимации
 protected virtual void Update() => AnimationPlay();
 
-#Если анимация играет, то увеличиваем интерполятор и с помощью Lerp'а двигаем нашу часть, иначе проверяем не остановилась ли наша часть на половине пути
+# Если анимация играет, то увеличиваем интерполятор и с помощью Lerp'а двигаем нашу часть, иначе проверяем не остановилась ли наша часть на половине пути
 private void AnimationPlay()
 {
     if (isPlayed)
@@ -358,11 +359,11 @@ private void AnimationPlay()
     }
 }
 
-#Публичные методы Открыть/Закрыть часть
+# Публичные методы Открыть/Закрыть часть
 public void OpenMessengerPart() => SetVisibleMessengerPart(true);
 public void CloseMessengerPart() => SetVisibleMessengerPart(false);
 
-#Задает значение открыть или закрыть часть
+# Задает значение открыть или закрыть часть
 private void SetVisibleMessengerPart(bool set)
 {
     if (rectTransform == null) GetRectTransform();
@@ -370,27 +371,27 @@ private void SetVisibleMessengerPart(bool set)
     SetPlayed(true);
 }
 
-#Задаем статус проигрывания анимации
+# Задаем статус проигрывания анимации
 private void SetPlayed(bool set)
 {
     isPlayed = set;
     interpolater = 0f;
 }
 
-#Отдельный метод для получения rectTransform
+# Отдельный метод для получения rectTransform
 private void GetRectTransform() => rectTransform = GetComponent<RectTransform>();
 ```
 
 
 **Message**
 ```
-#Объявляем переменную компонента Текст
+# Объявляем переменную компонента Текст
 private Text messageText;
 
-#В старте получаем в переменную компонент Текста
+# В старте получаем в переменную компонент Текста
 private void Start() => GetMessageText();
 
-#Публичный метод, к которому обращается Чат-лист при создании нового сообщения, задает текст сообщения и меняет цвет если был новый
+# Публичный метод, к которому обращается Чат-лист при создании нового сообщения, задает текст сообщения и меняет цвет если был новый
 public void SetDataMessage(string message, Color color = new Color())
 {
     if (messageText == null) GetMessageText();
@@ -399,6 +400,6 @@ public void SetDataMessage(string message, Color color = new Color())
     if (color != new Color()) messageText.color = color;
 }
 
-#Отдельный метод для получения компонента Текст.
+# Отдельный метод для получения компонента Текст.
 private void GetMessageText() => messageText = transform.GetChild(0).GetComponent<Text>();
 ```
