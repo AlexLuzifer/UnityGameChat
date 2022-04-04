@@ -4,16 +4,15 @@ namespace GameChat
 {
     public class MessengerPart : MonoBehaviour
     {
-        // Для интерполяции
-        private float interpolater = 0f;
+        private float interpolator = 0f;
 
         [SerializeField]
-        private float endPositionX = -650f; // Конечная позиция для скрытия
+        private float endPositionX = -650f;
 
-        private bool isShow = false; // Скрыта ли часть мессенджера 
-        private bool isPlayed = false; // Проигрывается ли анимация скрытия/открытия
+        private bool isShow = false; 
+        private bool isPlayed = false;
 
-        private RectTransform rectTransform; // Для анимации сдвига
+        private RectTransform rectTransform;
 
         private void Awake()
         {
@@ -21,10 +20,8 @@ namespace GameChat
 
             isShow = false;
             isPlayed = false;
-            rectTransform.anchoredPosition = new Vector3(endPositionX, 0f);
+            rectTransform.anchoredPosition = new Vector2(endPositionX, 0f);
         }
-
-        private void Start() => GetRectTransform();
 
         protected virtual void Update() => AnimationPlay();
 
@@ -33,10 +30,10 @@ namespace GameChat
         {
             if (isPlayed)
             {
-                interpolater += Time.deltaTime;
+                interpolator += Time.deltaTime;
 
                 float positionX = rectTransform.anchoredPosition.x;
-                positionX = Mathf.Lerp(positionX, isShow ? 0f : endPositionX, interpolater);
+                positionX = Mathf.Lerp(positionX, isShow ? 0f : endPositionX, interpolator);
 
                 if ((isShow && positionX > -1f) || (!isShow && positionX < endPositionX + 1))
                 {
@@ -56,10 +53,10 @@ namespace GameChat
         }
 
 
-        public void OpenMessengerPart() => VisibleMessengerPart(true);
-        public void CloseMessengerPart() => VisibleMessengerPart(false);
+        public void OpenMessengerPart() => SetVisibleMessengerPart(true);
+        public void CloseMessengerPart() => SetVisibleMessengerPart(false);
 
-        private void VisibleMessengerPart(bool set)
+        private void SetVisibleMessengerPart(bool set)
         {
             if (rectTransform == null) GetRectTransform();
             isShow = set;
@@ -69,7 +66,7 @@ namespace GameChat
         private void SetPlayed(bool set)
         {
             isPlayed = set;
-            interpolater = 0f;
+            interpolator = 0f;
         }
 
         private void GetRectTransform() => rectTransform = GetComponent<RectTransform>();

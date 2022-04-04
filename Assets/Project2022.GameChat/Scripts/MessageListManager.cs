@@ -18,8 +18,6 @@ namespace GameChat
 
         private bool isShowMessageList = false;
 
-        private Color defaultColor = new Color(1f, 1f, 1f, 1f);
-
         protected override void Update()
         {
             base.Update();

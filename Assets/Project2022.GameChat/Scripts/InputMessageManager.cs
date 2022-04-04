@@ -11,7 +11,7 @@ namespace GameChat
         private Messenger messenger;
         private InputField inputField;
 
-        private void Start() => GetAllVars();
+        private void Start() => GetComponents();
 
         public new void SendMessage(string message)
         {
@@ -45,7 +45,7 @@ namespace GameChat
             else CloseMessengerPart();
         }
 
-        private void GetAllVars()
+        private void GetComponents()
         {
             GetInputField();
             GetMessenger();

@@ -9,7 +9,7 @@ namespace GameChat
 
         private void Awake()
         {
-            GetmessageListManager();
+            GetMessageListManager();
             GetInputMessage();
         }
 
@@ -33,7 +33,7 @@ namespace GameChat
             inputMessage.CloseInputMessage();
         }
 
-        private void GetmessageListManager() => messageList = transform.GetChild(0).GetComponent<MessageListManager>();
+        private void GetMessageListManager() => messageList = transform.GetChild(0).GetComponent<MessageListManager>();
         private void GetInputMessage() => inputMessage = transform.GetChild(1).GetComponent<InputMessageManager>();
     }
 }
